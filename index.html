@@ -172,12 +172,353 @@
       50% { transform: scale(1.02); box-shadow: 0 0 36px rgba(0, 255, 200, 0.55); }
     }
 
-    .hype-bar {
-      position: sticky;
+    .atmo-giant {
+      display: none;
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .atmo-giant span {
+      position: absolute;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.028);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .atmo-giant .g-vyrox {
+      left: max(1rem, 3vw);
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-size: clamp(5rem, 9vw, 9.5rem);
+    }
+
+    .atmo-giant .g-kick {
+      right: max(1rem, 3vw);
+      top: 22%;
+      writing-mode: vertical-rl;
+      font-size: clamp(3.5rem, 6vw, 6.5rem);
+      color: rgba(255, 70, 85, 0.045);
+    }
+
+    .atmo-giant .g-year {
+      right: max(1.5rem, 3.5vw);
+      bottom: 12%;
+      font-size: clamp(4rem, 7vw, 7rem);
+      color: rgba(201, 162, 39, 0.04);
+    }
+
+    body.hype-on .atmo-giant span {
+      color: rgba(255, 255, 255, 0.04);
+    }
+
+    body.hype-on .atmo-giant .g-kick {
+      color: rgba(255, 70, 85, 0.07);
+    }
+
+    .atmo-orb {
+      display: none;
+      position: fixed;
+      width: min(420px, 28vw);
+      height: min(420px, 28vw);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(80px);
+      opacity: 0.35;
+    }
+
+    .atmo-orb.o1 {
+      left: 4%;
+      top: 30%;
+      background: rgba(255, 70, 85, 0.22);
+      animation: orb-drift 14s ease-in-out infinite;
+    }
+
+    .atmo-orb.o2 {
+      right: 6%;
+      bottom: 18%;
+      background: rgba(201, 162, 39, 0.18);
+      animation: orb-drift 18s ease-in-out infinite reverse;
+    }
+
+    @keyframes orb-drift {
+      50% { transform: translate(24px, -20px) scale(1.08); }
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 720px) minmax(0, 1fr);
+      align-items: start;
+    }
+
+    @media (min-width: 1400px) {
+      .page-shell {
+        grid-template-columns: minmax(220px, 1fr) minmax(720px, 820px) minmax(220px, 1fr);
+      }
+
+      .atmo-giant { display: block; }
+      .atmo-orb { display: block; }
+    }
+
+    @media (min-width: 1920px) {
+      .page-shell {
+        grid-template-columns: minmax(280px, 1fr) minmax(760px, 900px) minmax(280px, 1fr);
+      }
+
+      .atmo-giant span { color: rgba(255, 255, 255, 0.035); }
+    }
+
+    .page-main {
+      grid-column: 2;
+      min-width: 0;
+    }
+
+    .atmo-edge {
+      display: none;
+      position: fixed;
       top: 0;
-      z-index: 150;
-      max-width: 720px;
-      margin: 0 auto;
+      bottom: 0;
+      width: 3px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.3;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        var(--accent),
+        var(--gold),
+        rgba(0, 255, 200, 0.8),
+        transparent
+      );
+    }
+
+    .atmo-edge.left { left: 0; }
+    .atmo-edge.right { right: 0; }
+
+    body.hype-on .atmo-edge {
+      opacity: 0.85;
+      animation: edge-pulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes edge-pulse {
+      50% { filter: brightness(1.4); opacity: 1; }
+    }
+
+    .atmo-wing {
+      display: none;
+      position: sticky;
+      top: 4.5rem;
+      padding: 1.5rem 0 2rem;
+      flex-direction: column;
+      gap: 1.25rem;
+      pointer-events: none;
+    }
+
+    .atmo-wing.left {
+      grid-column: 1;
+      align-items: flex-end;
+      padding-right: clamp(0.75rem, 2vw, 1.75rem);
+    }
+
+    .atmo-wing.right {
+      grid-column: 3;
+      align-items: flex-start;
+      padding-left: clamp(0.75rem, 2vw, 1.75rem);
+      padding-top: 6.25rem;
+    }
+
+    @media (min-width: 960px) {
+      .atmo-wing { display: flex; }
+      .atmo-edge { display: block; }
+    }
+
+    @media (min-width: 1400px) {
+      .atmo-wing.left { padding-right: clamp(1.5rem, 4vw, 3.5rem); }
+      .atmo-wing.right { padding-left: clamp(1.5rem, 4vw, 3.5rem); }
+      .atmo-watermark { width: min(200px, 14vw); }
+      .atmo-stat { min-width: 148px; padding: 0.75rem 1rem; }
+      .atmo-vert { max-height: 280px; font-size: 0.75rem; }
+    }
+
+    .atmo-wide-only { display: none; }
+
+    @media (min-width: 1400px) {
+      .atmo-wide-only { display: block; }
+    }
+
+    .atmo-opp {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      padding: 6px;
+      opacity: 0.85;
+    }
+
+    .atmo-opp-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      text-align: right;
+      width: 100%;
+    }
+
+    .atmo-wing.right .atmo-opp-label { text-align: left; }
+
+    .atmo-event-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      opacity: 0.9;
+      object-fit: contain;
+    }
+
+    .atmo-watermark {
+      width: min(160px, 12vw);
+      opacity: 0.09;
+      border-radius: 20px;
+    }
+
+    body.hype-on .atmo-watermark {
+      opacity: 0.14;
+      filter: drop-shadow(0 0 24px rgba(255, 70, 85, 0.35));
+    }
+
+    .atmo-vert {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-right: 2px solid rgba(255, 70, 85, 0.35);
+      padding-right: 0.65rem;
+      max-height: 220px;
+    }
+
+    body.hype-on .atmo-vert {
+      color: rgba(255, 255, 255, 0.55);
+      border-color: rgba(0, 255, 200, 0.45);
+    }
+
+    .atmo-stat {
+      padding: 0.6rem 0.85rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(18, 24, 32, 0.65);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 120px;
+    }
+
+    .atmo-stat strong {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--text);
+    }
+
+    .atmo-stat.accent strong { color: var(--accent); }
+    .atmo-stat.gold strong { color: var(--gold); }
+
+    .atmo-roster-side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .atmo-roster-side span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .atmo-roster-side span::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.7;
+    }
+
+    body.hype-on .atmo-roster-side span::before {
+      animation: dot-blink 1.2s ease-in-out infinite;
+    }
+
+    @keyframes dot-blink {
+      50% { opacity: 1; box-shadow: 0 0 8px var(--accent); }
+    }
+
+    .atmo-ticker-h {
+      overflow: hidden;
+      margin: 0.65rem 1.25rem 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(12, 15, 20, 0.75);
+      mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    }
+
+    @media (min-width: 1400px) {
+      .atmo-ticker-h {
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: calc(50% - 50vw);
+        margin-right: calc(50% - 50vw);
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+      }
+    }
+
+    .atmo-ticker-track {
+      display: flex;
+      width: max-content;
+      gap: 2.5rem;
+      padding: 0.4rem 0;
+      animation: ticker-scroll 45s linear infinite;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    body.hype-on .atmo-ticker-track {
+      animation-duration: 24s;
+      color: rgba(232, 234, 237, 0.72);
+    }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .hype-bar {
       padding: 0.85rem 1.25rem 0;
     }
 
@@ -225,9 +566,7 @@
     .wrap {
       position: relative;
       z-index: 1;
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 2rem 1.25rem 3rem;
+      padding: 1.25rem 1.25rem 3rem;
     }
 
     header {
@@ -610,13 +949,46 @@
     <span class="laser l3"></span>
     <span class="laser l4"></span>
   </div>
-  <div class="hype-bar">
-    <button type="button" class="hype-btn" id="hype-btn" aria-pressed="false">
-      <span class="hype-btn-label">NASTROJ SIE DO MECZU!</span>
-    </button>
+  <div class="atmo-giant" aria-hidden="true">
+    <span class="g-vyrox">vyrox</span>
+    <span class="g-kick">Kickoff</span>
+    <span class="g-year">2026</span>
   </div>
-  <audio id="bg-music" src="assets/Vyrox.mp3" loop preload="auto"></audio>
-  <div class="wrap">
+  <span class="atmo-orb o1" aria-hidden="true"></span>
+  <span class="atmo-orb o2" aria-hidden="true"></span>
+  <span class="atmo-edge left" aria-hidden="true"></span>
+  <span class="atmo-edge right" aria-hidden="true"></span>
+  <div class="page-shell">
+    <aside class="atmo-wing left" aria-hidden="true">
+      <img class="atmo-watermark" src="assets/vyrox.png" width="160" height="160" alt="" />
+      <p class="atmo-vert">VCT EMEA Kickoff Open Qualifier #1</p>
+      <div class="atmo-stat accent">
+        Round 1
+        <strong>#32 slot</strong>
+      </div>
+      <div class="atmo-stat atmo-wide-only">
+        Draw
+        <strong>256 teams</strong>
+      </div>
+      <div class="atmo-wide-only">
+        <img class="atmo-opp" src="assets/valhalla.png" width="72" height="72" alt="" />
+        <p class="atmo-opp-label">Nast. rywal</p>
+      </div>
+    </aside>
+    <div class="page-main">
+      <div class="hype-bar">
+        <button type="button" class="hype-btn" id="hype-btn" aria-pressed="false">
+          <span class="hype-btn-label">NASTROJ SIE DO MECZU!</span>
+        </button>
+      </div>
+      <div class="atmo-ticker-h" aria-hidden="true">
+        <div class="atmo-ticker-track">
+          <span>VCT EMEA Kickoff &middot; Europe Open Qualifier #1 &middot; Bo3 &middot; 256 teams &middot; vyrox vs Valhalla &middot; 19:00 CET &middot; Road to Kickoff &middot; GL HF &middot;</span>
+          <span>VCT EMEA Kickoff &middot; Europe Open Qualifier #1 &middot; Bo3 &middot; 256 teams &middot; vyrox vs Valhalla &middot; 19:00 CET &middot; Road to Kickoff &middot; GL HF &middot;</span>
+        </div>
+      </div>
+      <audio id="bg-music" src="assets/Vyrox.mp3" loop preload="auto"></audio>
+      <div class="wrap">
     <header>
       <div class="brand-row">
         <img class="brand-logo main" src="assets/vyrox.png" width="88" height="88" alt="Vyrox logo" />
@@ -673,6 +1045,35 @@
     <footer>
       Zrodlo: Riot Toornament API &middot; odswiezanie co 2 min
     </footer>
+      </div>
+    </div>
+    <aside class="atmo-wing right" aria-hidden="true">
+      <img class="atmo-wide-only atmo-event-icon" src="assets/kickoff.png" width="64" height="64" alt="" />
+      <div class="atmo-stat gold">
+        Format
+        <strong>Best of 3</strong>
+      </div>
+      <div class="atmo-stat">
+        Region
+        <strong>EMEA</strong>
+      </div>
+      <div class="atmo-stat accent">
+        Termin
+        <strong>5-8 lis</strong>
+      </div>
+      <div class="atmo-stat atmo-wide-only">
+        Start
+        <strong>19:00 CET</strong>
+      </div>
+      <div class="atmo-roster-side">
+        <span>syml</span>
+        <span>Re5tles5</span>
+        <span>dexz</span>
+        <span>Mathyiaz</span>
+        <span>Spinjitzu</span>
+        <span>SmiTzhy</span>
+      </div>
+    </aside>
   </div>
 
   <script>

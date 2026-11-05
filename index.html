@@ -560,11 +560,13 @@
       } else if (teamId === "2598881962041485311") {
         url = CONFIG.logos.valhalla;
       }
-      try {
-        const team = await fetchApi(`/api/teams/${teamId}`);
-        if (team.logo?.id) url = logoMediaUrl(team.logo.id);
-      } catch (_) {
-        /* keep fallback */
+      if (isLocalDev()) {
+        try {
+          const team = await fetchApi(`/api/teams/${teamId}`);
+          if (team.logo?.id) url = logoMediaUrl(team.logo.id);
+        } catch (_) {
+          /* keep fallback */
+        }
       }
       teamLogoCache.set(teamId, url);
       return url;
@@ -699,11 +701,8 @@
     }
 
     function apiBases() {
-      const local =
-        location.hostname === "127.0.0.1" ||
-        location.hostname === "localhost";
-      if (local) return [""];
-      return ["", "https://play.toornament.com"];
+      if (isLocalDev()) return [""];
+      return [];
     }
 
     async function fetchApi(path) {

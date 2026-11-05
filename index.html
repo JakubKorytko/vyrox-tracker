@@ -416,16 +416,69 @@
       font-weight: 600;
     }
 
+    .audio-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .audio-toggle:hover {
+      border-color: rgba(255, 70, 85, 0.45);
+      background: rgba(26, 34, 48, 0.92);
+    }
+
+    .audio-toggle svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .audio-toggle .icon-off { display: none; }
+
+    .audio-toggle[aria-pressed="true"] .icon-on { display: none; }
+    .audio-toggle[aria-pressed="true"] .icon-off { display: block; }
+
     @media (max-width: 520px) {
       .brand-row { flex-wrap: wrap; }
       .brand-text { text-align: center; width: 100%; }
       .brand-logo.game { display: none; }
       .versus { gap: 0.5rem; }
       .team-logo { width: 64px; height: 64px; }
+      .audio-toggle { top: 0.65rem; right: 0.65rem; }
     }
   </style>
 </head>
 <body>
+  <button
+    type="button"
+    class="audio-toggle"
+    id="audio-toggle"
+    aria-pressed="false"
+    aria-label="Wylacz muzyke w tle"
+    title="Muzyka w tle"
+  >
+    <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.06a4.5 4.5 0 0 0 2.5-4.03zM14 3.23v2.06a7 7 0 0 1 0 13.74v2.06a9 9 0 0 0 0-17.84z"/>
+    </svg>
+    <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3.63 3.63a1 1 0 0 1 1.41 0L9 7.59V5c0-1.1.9-2 2-2h1l6 6v2.41l2.36 2.36a1 1 0 0 1-1.41 1.41L3.63 5.04a1 1 0 0 1 0-1.41zM14 3.23v2.06l2.36 2.36L14 3.23zM21 12c0 .82-.2 1.59-.54 2.27l1.45 1.45A8.96 8.96 0 0 0 23 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM7 10H3v4h4l5 5V5L7 10z"/>
+    </svg>
+  </button>
+  <audio id="bg-music" src="assets/Vyrox.mp3" loop preload="auto"></audio>
   <div class="wrap">
     <header>
       <div class="brand-row">
@@ -1075,6 +1128,44 @@
     load();
     setInterval(load, CONFIG.pollMs);
     document.getElementById("btn-refresh").addEventListener("click", load);
+
+    (function initBgMusic() {
+      const audio = document.getElementById("bg-music");
+      const btn = document.getElementById("audio-toggle");
+      if (!audio || !btn) return;
+
+      const storageKey = "vyrox-tracker-mute";
+
+      function syncUi() {
+        btn.setAttribute("aria-pressed", audio.muted ? "true" : "false");
+        btn.setAttribute(
+          "aria-label",
+          audio.muted ? "Wlacz muzyke w tle" : "Wylacz muzyke w tle"
+        );
+      }
+
+      btn.addEventListener("click", () => {
+        audio.muted = !audio.muted;
+        if (!audio.muted && audio.paused) {
+          audio.play().catch(() => {
+            audio.muted = true;
+          });
+        }
+        syncUi();
+        try {
+          localStorage.setItem(storageKey, audio.muted ? "1" : "0");
+        } catch (_) {}
+      });
+
+      try {
+        if (localStorage.getItem(storageKey) === "1") audio.muted = true;
+      } catch (_) {}
+
+      audio.play().catch(() => {
+        audio.muted = true;
+        return audio.play();
+      }).finally(syncUi);
+    })();
   </script>
 </body>
 </html>

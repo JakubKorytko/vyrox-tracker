@@ -1,0 +1,164 @@
+{
+  "updatedAt": "2026-11-05T11:57:05Z",
+  "participantId": "2600325438708242431",
+  "upcoming": {
+    "items": [
+      {
+        "id": "2605437642437631293",
+        "publicNotes": null,
+        "opponents": [
+          {
+            "participant": {
+              "id": "2600325438708242431",
+              "logo": null,
+              "type": "team",
+              "customFieldValues": {},
+              "name": "vyrox",
+              "team": {
+                "id": "2592245294119696383"
+              },
+              "lineup": []
+            },
+            "number": 1,
+            "position": 1,
+            "rank": null,
+            "result": null,
+            "forfeit": false,
+            "score": null
+          },
+          {
+            "participant": {
+              "id": "2600166780270987263",
+              "logo": null,
+              "type": "team",
+              "customFieldValues": {},
+              "name": "Valhalla",
+              "team": {
+                "id": "2598881962041485311"
+              },
+              "lineup": []
+            },
+            "number": 2,
+            "position": 2,
+            "rank": null,
+            "result": null,
+            "forfeit": false,
+            "score": null
+          }
+        ],
+        "tournament": {
+          "id": "2585087696641116159",
+          "discipline": "valorant",
+          "name": "Kickoff Europe Qualifier 1",
+          "status": "running",
+          "participantType": "team",
+          "scheduledDateStart": "2026-11-05",
+          "scheduledDateEnd": "2026-11-08",
+          "public": true,
+          "logo": {
+            "id": "2589287405584779263"
+          },
+          "settings": {
+            "paymentGateway": {
+              "paypal": null
+            },
+            "discipline": {
+              "map": {
+                "ascent": {
+                  "label": "Ascent"
+                },
+                "bind": {
+                  "label": "Bind"
+                },
+                "breeze": {
+                  "label": "Breeze"
+                },
+                "fracture": {
+                  "label": "Fracture"
+                },
+                "haven": {
+                  "label": "Haven"
+                },
+                "icebox": {
+                  "label": "Icebox"
+                },
+                "lotus": {
+                  "label": "Lotus"
+                },
+                "pearl": {
+                  "label": "Pearl"
+                },
+                "split": {
+                  "label": "Split"
+                },
+                "sunset": {
+                  "label": "Sunset"
+                }
+              }
+            }
+          }
+        },
+        "stage": {
+          "id": "2605437641489719295",
+          "tournament": {
+            "id": "2585087696641116159"
+          },
+          "number": 2,
+          "name": "Bracket",
+          "type": "single_elimination",
+          "status": "running",
+          "closed": false,
+          "settings": {
+            "size": 256,
+            "threshold": 0,
+            "round_naming": "number",
+            "third_decider": true
+          }
+        },
+        "group": {
+          "id": "2605437642437631486",
+          "number": 1,
+          "name": "Main Bracket",
+          "status": "running",
+          "closed": false,
+          "settings": {
+            "size": 256
+          }
+        },
+        "round": {
+          "id": "2605437642446019328",
+          "number": 1,
+          "name": "Round 1",
+          "status": "running",
+          "closed": false
+        },
+        "number": 32,
+        "type": "duel",
+        "scoreType": "points",
+        "status": "pending",
+        "scheduledDatetime": "2026-11-05T18:00:00+00:00",
+        "playedAt": null,
+        "reportStatus": null,
+        "reportClosed": false,
+        "settings": {
+          "format": null,
+          "report": null,
+          "size": null
+        }
+      }
+    ],
+    "range": {
+      "offset": 0,
+      "length": 1,
+      "total": 1
+    }
+  },
+  "completed": {
+    "items": [],
+    "range": {
+      "offset": 0,
+      "length": 0,
+      "total": 0
+    }
+  }
+}

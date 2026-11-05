@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>vyrox | Kickoff Qualifier</title>
+  <link rel="icon" href="assets/vyrox.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --bg2: #121820;
+      --card: rgba(26, 34, 48, 0.72);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8eaed;
+      --muted: #8b95a8;
+      --accent: #ff4655;
+      --accent-dim: rgba(255, 70, 85, 0.15);
+      --win: #3dd68c;
+      --loss: #ff6b6b;
+      --gold: #c9a227;
+      --radius: 16px;
+      --shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 70, 85, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 100% 50%, rgba(201, 162, 39, 0.06), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .brand-logo {
+      object-fit: contain;
+      border-radius: 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+    }
+
+    .brand-logo.main {
+      width: 88px;
+      height: 88px;
+      padding: 8px;
+      box-shadow: 0 0 0 2px rgba(255, 70, 85, 0.25);
+    }
+
+    .brand-logo.game {
+      width: 48px;
+      height: 48px;
+      padding: 6px;
+      opacity: 0.9;
+    }
+
+    .brand-text { text-align: left; min-width: 0; }
+
+    .event-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .event-pill img {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    h1 .org {
+      display: block;
+      font-size: 0.38em;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-top: 0.15rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--gold);
+      font-weight: 600;
+      margin-top: 0.15rem;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(255, 70, 85, 0.25);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 8vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    h1 span { color: var(--muted); font-weight: 400; font-size: 0.45em; display: block; margin-top: 0.25rem; }
+
+    .meta {
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .meta a { color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+    .meta a:hover { color: var(--accent); border-color: var(--accent); }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      padding: 0.65rem 1rem;
+      background: var(--bg2);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      display: inline-block;
+      margin-right: 0.4rem;
+    }
+
+    .dot.live { background: var(--win); box-shadow: 0 0 8px var(--win); animation: pulse 1.5s ease infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    section { margin-bottom: 1.75rem; }
+
+    section h2 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .card {
+      background: var(--card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.35rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-match {
+      text-align: center;
+      padding: 1.75rem 1.25rem;
+    }
+
+    .hero-match .round {
+      font-size: 0.8rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .versus {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+      min-width: 0;
+    }
+
+    .team-logo {
+      width: 76px;
+      height: 76px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 7px;
+    }
+
+    .team-logo.us {
+      box-shadow: 0 0 0 2px rgba(255, 70, 85, 0.35);
+    }
+
+    .team-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .team-name.us { color: var(--text); }
+
+    .history-item .opp-row {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .history-item .mini-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 4px;
+      flex-shrink: 0;
+    }
+
+    .score-pill {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.5rem;
+      font-weight: 500;
+      padding: 0.35rem 0.85rem;
+      background: var(--bg);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      min-width: 4.5rem;
+    }
+
+    .countdown {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      margin-top: 0.75rem;
+    }
+
+    .tag.pending { background: rgba(139, 149, 168, 0.2); color: var(--muted); }
+    .tag.running { background: rgba(61, 214, 140, 0.15); color: var(--win); }
+    .tag.completed { background: rgba(255, 107, 107, 0.12); color: var(--loss); }
+    .tag.win { background: rgba(61, 214, 140, 0.2); color: var(--win); }
+    .tag.loss { background: rgba(255, 70, 85, 0.2); color: var(--loss); }
+
+    .maps {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .map-chip {
+      font-size: 0.75rem;
+      font-family: "JetBrains Mono", monospace;
+      padding: 0.35rem 0.6rem;
+      background: var(--bg2);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .history-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .history-item:first-child { padding-top: 0; }
+
+    .history-item .opp { font-weight: 600; }
+    .history-item .sub { font-size: 0.8rem; color: var(--muted); }
+
+    .roster {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.65rem;
+    }
+
+    .player {
+      padding: 0.65rem 0.75rem;
+      background: var(--bg2);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .player strong { display: block; font-size: 0.95rem; }
+    .player span { font-size: 0.72rem; color: var(--muted); font-family: "JetBrains Mono", monospace; }
+
+    .player.sub { opacity: 0.85; border-style: dashed; }
+
+    .alert {
+      background: rgba(255, 70, 85, 0.1);
+      border: 1px solid rgba(255, 70, 85, 0.3);
+      border-radius: 12px;
+      padding: 1rem;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .alert code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      background: var(--bg);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .empty { color: var(--muted); font-size: 0.9rem; text-align: center; padding: 1rem; }
+
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2rem;
+    }
+
+    button.refresh {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button.refresh:hover { border-color: var(--accent); color: var(--accent); }
+
+    .debug-banner {
+      background: rgba(201, 162, 39, 0.12);
+      border: 1px solid rgba(201, 162, 39, 0.45);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+      color: var(--text);
+    }
+
+    .debug-banner code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+    }
+
+    .debug-banner a {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    @media (max-width: 520px) {
+      .brand-row { flex-wrap: wrap; }
+      .brand-text { text-align: center; width: 100%; }
+      .brand-logo.game { display: none; }
+      .versus { gap: 0.5rem; }
+      .team-logo { width: 64px; height: 64px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand-row">
+        <img class="brand-logo main" src="assets/vyrox.png" width="88" height="88" alt="Vyrox logo" />
+        <div class="brand-text">
+          <div class="event-pill">
+            <img src="assets/kickoff.png" width="22" height="22" alt="" />
+            <span>VCT EMEA Kickoff</span>
+          </div>
+          <h1>
+            vyrox
+            <span class="org">Vyrox eSports e.V.</span>
+          </h1>
+          <p class="subtitle">Europe Open Qualifier #1</p>
+        </div>
+        <img class="brand-logo game" src="assets/valorant.png" width="48" height="48" alt="Valorant" />
+      </div>
+      <p class="meta">
+        5-8 lis 2026 &middot;
+        <a href="https://play.toornament.com/en_GB/tournaments/2585087696641116159/participants/2600325438708242431/" target="_blank" rel="noopener">Toornament</a>
+        &middot;
+        <a href="https://discord.gg/xRtN3MQHS9" target="_blank" rel="noopener">Discord</a>
+        &middot;
+        <a href="https://vyroxesports.org/" target="_blank" rel="noopener">vyroxesports.org</a>
+      </p>
+    </header>
+
+    <div id="debug-banner" class="debug-banner" hidden></div>
+
+    <div id="setup-alert" class="alert" hidden>
+      Lokalnie: w folderze <code>vyrox-tracker</code> uruchom <code>python server.py</code>,
+      potem <code>http://127.0.0.1:8765/</code>. Na GitHub Pages dane ida z <code>data/live.json</code> (Action co 10 min).
+    </div>
+
+    <div class="status-bar">
+      <span id="sync-status"><span class="dot"></span>Ladowanie...</span>
+      <button type="button" class="refresh" id="btn-refresh">Odswiez</button>
+    </div>
+
+    <section aria-labelledby="next-label">
+      <h2 id="next-label">Nastepny / biezacy mecz</h2>
+      <div class="card hero-match" id="featured">...</div>
+    </section>
+
+    <section aria-labelledby="hist-label">
+      <h2 id="hist-label">Historia</h2>
+      <div class="card" id="history"><p class="empty">Brak zakonczonych meczow.</p></div>
+    </section>
+
+    <section aria-labelledby="roster-label">
+      <h2 id="roster-label">Sklad</h2>
+      <div class="card roster" id="roster"></div>
+    </section>
+
+    <footer>
+      Zrodlo: Riot Toornament API &middot; odswiezanie co 2 min
+    </footer>
+  </div>
+
+  <script>
+    const CONFIG = {
+      participantId: "2600325438708242431",
+      teamId: "2592245294119696383",
+      teamName: "vyrox",
+      timezone: "Europe/Warsaw",
+      pollMs: 120_000,
+      logos: {
+        vyrox: "assets/vyrox.png",
+        valhalla: "assets/valhalla.png",
+        kickoff: "assets/kickoff.png",
+        valorant: "assets/valorant.png",
+      },
+      roster: [
+        { nick: "syml", riot: "symlzerra#LVgod" },
+        { nick: "Re5tles5", riot: "yMetro#yR6" },
+        { nick: "dexz", riot: "dexz#111" },
+        { nick: "Mathyiaz", riot: "Mathyiaz#ttv" },
+        { nick: "Spinjitzu", riot: "Spinjitzu#swe" },
+        { nick: "SmiTzhy", riot: "SmiTzhy#2911", sub: true },
+      ],
+    };
+
+    function parseDebugMode() {
+      const params = new URLSearchParams(location.search);
+      const id = params.get("debugParticipant");
+      if (id) return { id, label: id, preset: null };
+      return null;
+    }
+
+    const urlParams = new URLSearchParams(location.search);
+    const demoMode =
+      urlParams.get("demo") === "1" || urlParams.get("demo") === "true";
+    const watchAnyMode =
+      urlParams.get("watch") === "any" || urlParams.get("watch") === "1";
+    const debugMode = demoMode || watchAnyMode ? null : parseDebugMode();
+    const STAGE_ID = "2605437641489719295";
+    let activeParticipantId = debugMode?.id ?? CONFIG.participantId;
+    let activeTeamName = debugMode?.label ?? CONFIG.teamName;
+
+    const fmtDate = new Intl.DateTimeFormat("pl-PL", {
+      timeZone: CONFIG.timezone,
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const statusPl = {
+      pending: "Zaplanowany",
+      running: "W trakcie",
+      completed: "Zakonczony",
+    };
+
+    let countdownTimer = null;
+    const teamLogoCache = new Map();
+
+    function isTrackedParticipant(participant) {
+      return participant?.id === activeParticipantId;
+    }
+
+    function logoMediaUrl(logoId) {
+      return `https://play.toornament.com/media/file/${logoId}/logo_medium`;
+    }
+
+    async function logoFromTeamId(teamId, fallback) {
+      if (!teamId) return fallback;
+      if (teamLogoCache.has(teamId)) return teamLogoCache.get(teamId);
+      let url = fallback;
+      if (teamId === CONFIG.teamId && !debugMode) {
+        url = CONFIG.logos.vyrox;
+      } else if (teamId === "2598881962041485311") {
+        url = CONFIG.logos.valhalla;
+      }
+      try {
+        const team = await fetchApi(`/api/teams/${teamId}`);
+        if (team.logo?.id) url = logoMediaUrl(team.logo.id);
+      } catch (_) {
+        /* keep fallback */
+      }
+      teamLogoCache.set(teamId, url);
+      return url;
+    }
+
+    async function resolveLogo(participant) {
+      if (!participant) return CONFIG.logos.valorant;
+      if (!debugMode && participant.id === CONFIG.participantId) {
+        return CONFIG.logos.vyrox;
+      }
+      return logoFromTeamId(
+        participant.team?.id,
+        CONFIG.logos.valorant
+      );
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function buildDemoMatch() {
+      const valhallaPid = "2600166780270987263";
+      const when = new Date().toISOString();
+      return {
+        id: "demo-vyrox-valhalla",
+        status: "completed",
+        scheduledDatetime: when,
+        playedAt: when,
+        round: { name: "Round 1" },
+        number: 32,
+        opponents: [
+          {
+            number: 1,
+            participant: {
+              id: CONFIG.participantId,
+              name: "vyrox",
+              team: { id: CONFIG.teamId },
+            },
+            score: 2,
+            result: "win",
+            forfeit: false,
+          },
+          {
+            number: 2,
+            participant: {
+              id: valhallaPid,
+              name: "Valhalla",
+              team: { id: "2598881962041485311" },
+            },
+            score: 1,
+            result: null,
+            forfeit: false,
+          },
+        ],
+        matchSets: [
+          {
+            status: "completed",
+            settings: { map: { label: "Ascent" } },
+            opponents: [
+              { number: 1, score: 13, result: "win" },
+              { number: 2, score: 9, result: null },
+            ],
+          },
+          {
+            status: "completed",
+            settings: { map: { label: "Bind" } },
+            opponents: [
+              { number: 1, score: 11, result: null },
+              { number: 2, score: 13, result: "win" },
+            ],
+          },
+          {
+            status: "completed",
+            settings: { map: { label: "Lotus" } },
+            opponents: [
+              { number: 1, score: 13, result: "win" },
+              { number: 2, score: 10, result: null },
+            ],
+          },
+        ],
+      };
+    }
+
+    function isRealCompletedMatch(match) {
+      if (match.status !== "completed") return false;
+      const ops = match.opponents || [];
+      if (ops.some((o) => o.forfeit)) return false;
+      if (ops.some((o) => o.score != null)) return true;
+      for (const set of match.matchSets || []) {
+        if (set.status !== "completed") continue;
+        if ((set.opponents || []).some((o) => o.score != null)) return true;
+      }
+      return false;
+    }
+
+    async function findFirstRealMatchInStage() {
+      const res = await fetchApi(
+        `/api/matches?stage_ids=${STAGE_ID}&statuses=completed&sort=latest_results&limit=100`
+      );
+      return (res.items || []).find(isRealCompletedMatch) || null;
+    }
+
+    function updateDebugBanner() {
+      const el = document.getElementById("debug-banner");
+      if (watchAnyMode) {
+        el.hidden = false;
+        el.innerHTML =
+          "<strong>Pierwszy normalny mecz w turnieju</strong> (bez walkowera, z wynikiem). " +
+          `<a href="${location.pathname}">Wroc do vyrox</a> · ` +
+          `<a href="${location.pathname}?demo=1">Demo UI</a>`;
+        return;
+      }
+      if (demoMode) {
+        el.hidden = false;
+        el.innerHTML =
+          "<strong>Podglad UI (DEMO)</strong> – fikcyjny wynik <code>2 : 1</code> vs Valhalla. " +
+          "Prawdziwy mecz vyrox: ok. 19:00. " +
+          `<a href="${location.pathname}">Wylacz demo – live z Toornament</a>`;
+        return;
+      }
+      if (!debugMode) {
+        el.hidden = true;
+        return;
+      }
+      el.hidden = false;
+      el.innerHTML =
+        `Tryb dev: API dla uczestnika <code>${escapeHtml(activeTeamName)}</code>. ` +
+        `<a href="${location.pathname}">Wroc do vyrox</a>`;
+    }
+
+    function apiBases() {
+      const local =
+        location.hostname === "127.0.0.1" ||
+        location.hostname === "localhost";
+      if (local) return [""];
+      return ["", "https://play.toornament.com"];
+    }
+
+    async function fetchApi(path) {
+      let lastErr;
+      for (const base of apiBases()) {
+        try {
+          const res = await fetch(base + path, { cache: "no-store" });
+          if (!res.ok) throw new Error(String(res.status));
+          return await res.json();
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      throw lastErr;
+    }
+
+    function opponent(match) {
+      const ops = match.opponents || [];
+      const us = ops.find((o) => isTrackedParticipant(o.participant));
+      const them = ops.find((o) => !isTrackedParticipant(o.participant));
+      return { us, them, ops };
+    }
+
+    function syncActiveTeamNameFromMatch(match) {
+      if (!debugMode || !match) return;
+      const { us } = opponent(match);
+      const name = us?.participant?.name;
+      if (name) {
+        activeTeamName = name;
+        updateDebugBanner();
+      }
+    }
+
+    function matchScoreDisplay(match) {
+      const { us, them } = opponent(match);
+      const usScore = us?.score;
+      const themScore = them?.score;
+      if (usScore != null || themScore != null) {
+        return `${usScore ?? 0} : ${themScore ?? 0}`;
+      }
+
+      const sets = match.matchSets || [];
+      if (sets.length) {
+        const usNum = us?.number;
+        const themNum = them?.number;
+        let usMaps = 0;
+        let themMaps = 0;
+        for (const set of sets) {
+          if (set.status !== "completed") continue;
+          for (const o of set.opponents || []) {
+            if (o.result !== "win") continue;
+            if (o.number === usNum) usMaps++;
+            if (o.number === themNum) themMaps++;
+          }
+        }
+        if (usMaps || themMaps) return `${usMaps} : ${themMaps}`;
+      }
+
+      if (match.status === "completed") {
+        if (them?.forfeit) return "W/O";
+        if (us?.forfeit) return "FF";
+        if (us?.result === "win" || them?.result === "win") {
+          return "Wynik bez map";
+        }
+      }
+
+      return "-";
+    }
+
+    function historyResultText(match) {
+      const oc = outcome(match);
+      const score = matchScoreDisplay(match);
+      const base =
+        oc === "win" ? "Wygrana" : oc === "loss" ? "Przegrana" : "Wynik";
+      if (score === "-") return base;
+      if (score === "W/O") return `${base} (walkower)`;
+      if (score === "FF") return `${base} (nasz FF)`;
+      if (score === "Wynik bez map") return `${base} (Riot bez liczb)`;
+      return `${base} ${score}`;
+    }
+
+    function outcome(match) {
+      const { us, them } = opponent(match);
+      if (match.status !== "completed") return null;
+      if (us?.result === "win") return "win";
+      if (them?.result === "win") return "loss";
+      if (us?.forfeit) return "loss";
+      if (them?.forfeit) return "win";
+      return null;
+    }
+
+    function renderMaps(match) {
+      const sets = match.matchSets || [];
+      if (!sets.length) return "";
+      return sets
+        .map((s) => {
+          const map = s.settings?.map?.label || s.settings?.map || "Mapa";
+          const scores = (s.opponents || [])
+            .map((o) => o.score)
+            .filter((x) => x != null);
+          const sc =
+            scores.length >= 2 ? `${scores[0]}-${scores[1]}` : "";
+          return `<span class="map-chip">${map} ${sc}</span>`;
+        })
+        .join("");
+    }
+
+    async function renderFeatured(match) {
+      const { us, them, ops } = opponent(match);
+      const [usLogo, themLogo] = await Promise.all([
+        resolveLogo(us?.participant),
+        resolveLogo(them?.participant),
+      ]);
+      const oppName = them?.participant?.name ?? "TBD";
+      const when = match.scheduledDatetime
+        ? fmtDate.format(new Date(match.scheduledDatetime))
+        : "Czas TBA";
+      const round = match.round?.name ?? "";
+      const num = match.number ? `#${match.number}` : "";
+      const st = match.status;
+      const tagClass = st === "completed" ? outcome(match) || "completed" : st;
+      const tagText =
+        st === "completed"
+          ? outcome(match) === "win"
+            ? "Wygrana"
+            : outcome(match) === "loss"
+              ? "Przegrana"
+              : statusPl[st]
+          : statusPl[st] || st;
+
+      const maps = renderMaps(match);
+
+      return `
+        <p class="round">${round} ${num}</p>
+        <div class="versus">
+          <div class="side">
+            <img class="team-logo us" src="${usLogo}" alt="" width="76" height="76" />
+            <div class="team-name us">${escapeHtml(activeTeamName)}</div>
+          </div>
+          <div class="score-pill">${matchScoreDisplay(match)}</div>
+          <div class="side">
+            <img class="team-logo" src="${themLogo}" alt="" width="76" height="76" />
+            <div class="team-name">${escapeHtml(oppName)}</div>
+          </div>
+        </div>
+        <p class="countdown" id="countdown">${when}</p>
+        <span class="tag ${tagClass}">${tagText}</span>
+        ${maps ? `<div class="maps">${maps}</div>` : ""}
+        <p class="meta" style="margin-top:1rem">
+          <a href="https://play.toornament.com/en_GB/tournaments/2585087696641116159/matches/${match.id}/" target="_blank" rel="noopener">Strona meczu</a>
+        </p>
+      `;
+    }
+
+    function startCountdown(iso) {
+      if (countdownTimer) clearInterval(countdownTimer);
+      const el = document.getElementById("countdown");
+      if (!el || !iso) return;
+
+      const target = new Date(iso).getTime();
+      const tick = () => {
+        const diff = target - Date.now();
+        const base = fmtDate.format(new Date(iso));
+        if (diff <= 0) {
+          el.textContent = base + " (start)";
+          return;
+        }
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const sec = Math.floor((diff % 60000) / 1000);
+        el.textContent = `${base} - za ${h}h ${m}m ${sec}s`;
+      };
+      tick();
+      countdownTimer = setInterval(tick, 1000);
+    }
+
+    async function renderHistory(items) {
+      const box = document.getElementById("history");
+      if (!items.length) {
+        box.innerHTML = '<p class="empty">Brak zakonczonych meczow.</p>';
+        return;
+      }
+      const rows = await Promise.all(
+        items.map(async (m) => {
+          const { them } = opponent(m);
+          const logo = await resolveLogo(them?.participant);
+          const oc = outcome(m);
+          const when = m.playedAt || m.scheduledDatetime;
+          const dt = when ? fmtDate.format(new Date(when)) : "";
+          return `
+            <div class="history-item">
+              <div>
+                <div class="opp-row">
+                  <img class="mini-logo" src="${logo}" alt="" width="36" height="36" />
+                  <div>
+                    <div class="opp">vs ${escapeHtml(them?.participant?.name ?? "?")}</div>
+                    <div class="sub">${m.round?.name ?? ""} &middot; ${dt}</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <span class="tag ${oc || "completed"}">${historyResultText(m)}</span>
+              </div>
+            </div>`;
+        })
+      );
+      box.innerHTML = rows.join("");
+    }
+
+    function renderRoster() {
+      document.getElementById("roster").innerHTML = CONFIG.roster
+        .map(
+          (p) => `
+        <div class="player${p.sub ? " sub" : ""}">
+          <strong>${escapeHtml(p.nick)}</strong>
+          <span>${escapeHtml(p.riot)}${p.sub ? " (sub)" : ""}</span>
+        </div>`
+        )
+        .join("");
+    }
+
+    function isLocalDev() {
+      return (
+        location.hostname === "127.0.0.1" ||
+        location.hostname === "localhost"
+      );
+    }
+
+    async function applyMatchLists(upcoming, completed, statusEl, alertEl) {
+      alertEl.hidden = true;
+      const live = upcoming.items?.find((m) => m.status === "running");
+      const next =
+        live || upcoming.items?.[0] || completed.items?.[0];
+
+      syncActiveTeamNameFromMatch(next);
+
+      const featured = document.getElementById("featured");
+      if (next) {
+        featured.innerHTML = await renderFeatured(next);
+        if (next.status === "pending" && next.scheduledDatetime) {
+          startCountdown(next.scheduledDatetime);
+        }
+      } else {
+        featured.innerHTML =
+          '<p class="empty">Brak zaplanowanych meczow. Qual moze byc zakonczony dla vyrox.</p>';
+      }
+
+      await renderHistory(completed.items || []);
+
+      const dot = upcoming.items?.some((m) => m.status === "running")
+        ? "live"
+        : "";
+      return { dot, next };
+    }
+
+    async function loadFromGitHubData(statusEl, alertEl) {
+      const res = await fetch(`data/live.json?cb=${Date.now()}`, {
+        cache: "no-store",
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const data = await res.json();
+      const { dot } = await applyMatchLists(
+        data.upcoming || { items: [] },
+        data.completed || { items: [] },
+        statusEl,
+        alertEl
+      );
+      const when = data.updatedAt
+        ? fmtDate.format(new Date(data.updatedAt))
+        : fmtDate.format(new Date());
+      statusEl.innerHTML = `<span class="dot ${dot}"></span>Dane z Action (JSON ${when})`;
+    }
+
+    async function load() {
+      const statusEl = document.getElementById("sync-status");
+      const alertEl = document.getElementById("setup-alert");
+      const pid = activeParticipantId;
+
+      if (demoMode) {
+        alertEl.hidden = true;
+        updateDebugBanner();
+        const demo = buildDemoMatch();
+        document.getElementById("featured").innerHTML =
+          await renderFeatured(demo);
+        await renderHistory([demo]);
+        statusEl.innerHTML =
+          '<span class="dot"></span>DEMO – nie prawdziwy wynik';
+        return;
+      }
+
+      if (watchAnyMode) {
+        updateDebugBanner();
+        try {
+          const real = await findFirstRealMatchInStage();
+          alertEl.hidden = true;
+          const featured = document.getElementById("featured");
+          const history = document.getElementById("history");
+          if (real) {
+            const names = real.opponents.map(
+              (o) => o.participant?.name
+            );
+            activeParticipantId = real.opponents[0].participant.id;
+            activeTeamName = real.opponents[0].participant?.name ?? "?";
+            featured.innerHTML = await renderFeatured(real);
+            await renderHistory([real]);
+            statusEl.innerHTML = `<span class="dot live"></span>Live: ${names.join(" vs ")}`;
+          } else {
+            featured.innerHTML =
+              '<p class="empty">Jeszcze <strong>zero</strong> normalnych meczow w EU Qual 1.<br><br>Na razie w API tylko walkowery (FF) albo mecze w toku bez wpisanego wyniku.<br>Odswiez za jakis czas – po pierwszych rozegranych Bo3 ten widok sam cos pokaze.</p>';
+            history.innerHTML =
+              '<p class="empty">Czekamy na pierwszy mecz z liczbami w Riot Toornament.</p>';
+            statusEl.innerHTML =
+              '<span class="dot"></span>Brak normalnych wynikow w turnieju';
+          }
+        } catch (e) {
+          alertEl.hidden = false;
+        }
+        return;
+      }
+
+      if (!isLocalDev()) {
+        try {
+          await loadFromGitHubData(statusEl, alertEl);
+          return;
+        } catch (e) {
+          alertEl.hidden = false;
+          statusEl.innerHTML =
+            '<span class="dot"></span>Brak data/live.json – czekam na Action';
+          document.getElementById("featured").innerHTML =
+            '<p class="empty">Pierwszy deploy GitHub Pages jeszcze trwa albo workflow nie poszedl.</p>';
+          return;
+        }
+      }
+
+      try {
+        const [upcoming, completed] = await Promise.all([
+          fetchApi(
+            `/api/matches?participant_ids=${pid}&statuses=pending,running&sort=scheduled_asc&limit=5`
+          ),
+          fetchApi(
+            `/api/matches?participant_ids=${pid}&statuses=completed&sort=latest_results&limit=12`
+          ),
+        ]);
+
+        const { dot } = await applyMatchLists(
+          upcoming,
+          completed,
+          statusEl,
+          alertEl
+        );
+        const now = fmtDate.format(new Date());
+        statusEl.innerHTML = `<span class="dot ${dot}"></span>Zaktualizowano ${now}`;
+      } catch (e) {
+        alertEl.hidden = false;
+        statusEl.innerHTML =
+          '<span class="dot"></span>Offline - uruchom server.py';
+        document.getElementById("featured").innerHTML =
+          '<p class="empty">Nie mozna pobrac danych (CORS). Uzyj lokalnego serwera.</p>';
+      }
+    }
+
+    updateDebugBanner();
+    renderRoster();
+    if (debugMode) {
+      document.getElementById("roster-label").textContent =
+        "Sklad (vyrox - ukryty w trybie testowym)";
+      document.getElementById("roster").innerHTML =
+        '<p class="empty">W trybie debug wyswietlamy tylko mecze innej druzyny. Sklad vyrox bez zmian w kodzie.</p>';
+    }
+    load();
+    setInterval(load, CONFIG.pollMs);
+    document.getElementById("btn-refresh").addEventListener("click", load);
+  </script>
+</body>
+</html>

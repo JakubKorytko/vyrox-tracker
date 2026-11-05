@@ -44,6 +44,182 @@
         radial-gradient(ellipse 60% 40% at 100% 50%, rgba(201, 162, 39, 0.06), transparent);
       pointer-events: none;
       z-index: 0;
+      transition: opacity 0.5s;
+    }
+
+    body.hype-on::before {
+      opacity: 0.35;
+    }
+
+    .laser-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      overflow: hidden;
+    }
+
+    body.hype-on .laser-field {
+      opacity: 1;
+    }
+
+    .laser-field::before {
+      content: "";
+      position: absolute;
+      inset: -60%;
+      background: conic-gradient(
+        from 0deg at 50% 45%,
+        transparent 0deg,
+        rgba(255, 70, 85, 0.22) 40deg,
+        transparent 80deg,
+        rgba(0, 255, 200, 0.18) 140deg,
+        transparent 200deg,
+        rgba(180, 80, 255, 0.2) 260deg,
+        transparent 320deg
+      );
+      animation: laser-spin 5s linear infinite;
+    }
+
+    .laser-field::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.03) 2px,
+        rgba(255, 255, 255, 0.03) 3px
+      );
+      animation: scan-flicker 0.12s steps(2) infinite;
+      opacity: 0.6;
+    }
+
+    .laser {
+      position: absolute;
+      width: 220%;
+      height: 2px;
+      left: -60%;
+      filter: blur(0.5px);
+      opacity: 0.75;
+    }
+
+    .laser.l1 {
+      top: 18%;
+      background: linear-gradient(90deg, transparent, #ff0080, #ff8800, transparent);
+      transform: rotate(-28deg);
+      animation: laser-sweep-a 2.2s ease-in-out infinite;
+    }
+
+    .laser.l2 {
+      top: 42%;
+      background: linear-gradient(90deg, transparent, #00ffcc, #0088ff, transparent);
+      animation: laser-sweep-b 2.8s ease-in-out infinite reverse;
+      animation-delay: -0.6s;
+    }
+
+    .laser.l3 {
+      top: 68%;
+      background: linear-gradient(90deg, transparent, #cc44ff, #ff4655, transparent);
+      animation: laser-sweep-c 3.1s ease-in-out infinite;
+      animation-delay: -1.2s;
+    }
+
+    .laser.l4 {
+      top: 85%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ffff00, #00ff88, transparent);
+      animation: laser-sweep-d 1.9s ease-in-out infinite reverse;
+    }
+
+    @keyframes laser-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes laser-sweep-a {
+      0%, 100% { transform: translateX(-8%) rotate(-28deg); opacity: 0.35; }
+      50% { transform: translateX(8%) rotate(-28deg); opacity: 0.95; }
+    }
+
+    @keyframes laser-sweep-b {
+      0%, 100% { transform: translateX(-8%) rotate(22deg); opacity: 0.35; }
+      50% { transform: translateX(8%) rotate(22deg); opacity: 0.95; }
+    }
+
+    @keyframes laser-sweep-c {
+      0%, 100% { transform: translateX(-8%) rotate(-12deg); opacity: 0.35; }
+      50% { transform: translateX(8%) rotate(-12deg); opacity: 0.95; }
+    }
+
+    @keyframes laser-sweep-d {
+      0%, 100% { transform: translateX(-8%) rotate(35deg); opacity: 0.35; }
+      50% { transform: translateX(8%) rotate(35deg); opacity: 0.95; }
+    }
+
+    @keyframes scan-flicker {
+      50% { opacity: 0.25; }
+    }
+
+    @keyframes rainbow-shift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 400% 50%; }
+    }
+
+    @keyframes hype-pulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 24px rgba(255, 136, 0, 0.45); }
+      50% { transform: scale(1.02); box-shadow: 0 0 36px rgba(0, 255, 200, 0.55); }
+    }
+
+    .hype-bar {
+      position: sticky;
+      top: 0;
+      z-index: 150;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem 0;
+    }
+
+    .hype-btn {
+      display: block;
+      width: 100%;
+      padding: 1.05rem 1.25rem;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: clamp(0.95rem, 3.8vw, 1.15rem);
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #0a0c10;
+      background: linear-gradient(
+        90deg,
+        #ff3366,
+        #ff8800,
+        #ffee00,
+        #33ff99,
+        #3399ff,
+        #cc66ff,
+        #ff3366
+      );
+      background-size: 400% 100%;
+      animation: rainbow-shift 2.8s linear infinite;
+      box-shadow: 0 8px 32px rgba(255, 70, 85, 0.35);
+      transition: transform 0.15s, filter 0.15s;
+    }
+
+    .hype-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    body.hype-on .hype-btn {
+      animation: rainbow-shift 1.4s linear infinite, hype-pulse 1.6s ease-in-out infinite;
+      color: #fff;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+      border-color: rgba(255, 255, 255, 0.55);
     }
 
     .wrap {
@@ -416,76 +592,29 @@
       font-weight: 600;
     }
 
-    .audio-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      z-index: 100;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-      transition: border-color 0.15s, background 0.15s;
-    }
-
-    .audio-toggle:hover {
-      border-color: rgba(255, 70, 85, 0.45);
-      background: rgba(26, 34, 48, 0.92);
-    }
-
-    .audio-toggle svg {
-      width: 22px;
-      height: 22px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .audio-toggle .icon-off { display: none; }
-
-    .audio-toggle[aria-pressed="true"] .icon-on { display: none; }
-    .audio-toggle[aria-pressed="true"] .icon-off { display: block; }
-
     @media (max-width: 520px) {
       .brand-row { flex-wrap: wrap; }
       .brand-text { text-align: center; width: 100%; }
       .brand-logo.game { display: none; }
       .versus { gap: 0.5rem; }
       .team-logo { width: 64px; height: 64px; }
-      .audio-toggle { top: 0.65rem; right: 0.65rem; }
+      .hype-bar { padding: 0.65rem 1rem 0; }
+      .hype-btn { padding: 0.9rem 0.75rem; letter-spacing: 0.05em; }
     }
   </style>
 </head>
 <body>
-  <button
-    type="button"
-    class="audio-toggle"
-    id="audio-toggle"
-    aria-pressed="false"
-    aria-label="Wylacz muzyke w tle"
-    title="Muzyka w tle"
-  >
-    <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-    <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="22" y1="9" x2="16" y2="15"/>
-      <line x1="16" y1="9" x2="22" y2="15"/>
-    </svg>
-  </button>
+  <div class="laser-field" aria-hidden="true">
+    <span class="laser l1"></span>
+    <span class="laser l2"></span>
+    <span class="laser l3"></span>
+    <span class="laser l4"></span>
+  </div>
+  <div class="hype-bar">
+    <button type="button" class="hype-btn" id="hype-btn" aria-pressed="false">
+      <span class="hype-btn-label">NASTROJ SIE DO MECZU!</span>
+    </button>
+  </div>
   <audio id="bg-music" src="assets/Vyrox.mp3" loop preload="auto"></audio>
   <div class="wrap">
     <header>
@@ -1137,27 +1266,37 @@
     setInterval(load, CONFIG.pollMs);
     document.getElementById("btn-refresh").addEventListener("click", load);
 
-    (function initBgMusic() {
+    (function initHypeMusic() {
       const audio = document.getElementById("bg-music");
-      const btn = document.getElementById("audio-toggle");
-      if (!audio || !btn) return;
+      const btn = document.getElementById("hype-btn");
+      const label = btn?.querySelector(".hype-btn-label");
+      if (!audio || !btn || !label) return;
 
       const storageKey = "vyrox-tracker-mute";
 
+      function isHyping() {
+        return !audio.muted && !audio.paused;
+      }
+
       function syncUi() {
-        btn.setAttribute("aria-pressed", audio.muted ? "true" : "false");
+        const on = isHyping();
+        document.body.classList.toggle("hype-on", on);
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        label.textContent = on ? "Wystarczy..." : "NASTROJ SIE DO MECZU!";
         btn.setAttribute(
           "aria-label",
-          audio.muted ? "Wlacz muzyke w tle" : "Wylacz muzyke w tle"
+          on ? "Wylacz muzyke i efekty" : "Wlacz muzyke na mecz"
         );
       }
 
       btn.addEventListener("click", () => {
-        audio.muted = !audio.muted;
-        if (!audio.muted && audio.paused) {
+        if (audio.muted || audio.paused) {
+          audio.muted = false;
           audio.play().catch(() => {
             audio.muted = true;
           });
+        } else {
+          audio.muted = true;
         }
         syncUi();
         try {
@@ -1165,14 +1304,15 @@
         } catch (_) {}
       });
 
+      audio.addEventListener("play", syncUi);
+      audio.addEventListener("pause", syncUi);
+
       try {
         if (localStorage.getItem(storageKey) === "1") audio.muted = true;
       } catch (_) {}
 
-      audio.play().catch(() => {
-        audio.muted = true;
-        return audio.play();
-      }).finally(syncUi);
+      audio.muted = true;
+      syncUi();
     })();
   </script>
 </body>
